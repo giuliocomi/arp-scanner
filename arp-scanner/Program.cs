@@ -157,7 +157,7 @@ namespace ArpScanner
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine("Please provide the text file containing the IP list for the ARP scan.");
-                Console.WriteLine("Usage: arpscanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]");
+                Console.WriteLine("Usage: arp-scanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]");
                 Console.ResetColor();
             }
             return;
