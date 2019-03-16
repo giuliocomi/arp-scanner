@@ -29,7 +29,6 @@ namespace ArpScanner
         {
             IPAddress ipAddress = new IPAddress(0);
             byte[] macAddr = new byte[6];
-            string deviceInfo = "";
 
             try
             {
@@ -43,9 +42,7 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(string.Join(": ", "Invalid IP read from file", ipString));
-                Console.ResetColor();
+                FormatOutput(string.Join(": ", "Invalid IP read from file", ipString), ConsoleColor.Red);
             }
         }
 
@@ -66,9 +63,8 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.WriteLine(e); //TODO
+                FormatOutput(e.ToString(), ConsoleColor.Red);   //TODO
             }
-
             return "Unknown";
         }
 
@@ -87,9 +83,7 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e); //TODO
-                Console.ResetColor();
+                FormatOutput(e.ToString(), ConsoleColor.Red);   //TODO
             }
 
             Thread.Sleep(timeout);
@@ -107,9 +101,8 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error reading file.");
-                Console.ResetColor();
+                FormatOutput("Error reading file.", ConsoleColor.Red);
+
                 return new List<string>();
             }
             return list;
@@ -133,14 +126,11 @@ namespace ArpScanner
                     }
                     catch
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Cannot read timeout value.");
+                        FormatOutput("Cannot read timeout value.", ConsoleColor.Red);
                     }
                 }
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Starting ARP scan");
-                Console.ResetColor();
+                FormatOutput("Starting ARP scan", ConsoleColor.Cyan);
 
                 output = CheckStatus(LoadListFromFile(ipFile), timeout);
 
@@ -155,12 +145,17 @@ namespace ArpScanner
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Please provide the text file containing the IP list for the ARP scan.");
-                Console.WriteLine("Usage: arp-scanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]");
-                Console.ResetColor();
+                FormatOutput("Please provide the text file containing the IP list for the ARP scan.", ConsoleColor.Yellow);
+                FormatOutput("Usage: arp-scanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]", ConsoleColor.Yellow);
             }
             return;
+        }
+
+        private static void FormatOutput(string message, System.ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }
