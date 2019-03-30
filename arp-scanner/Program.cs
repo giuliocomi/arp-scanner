@@ -5,17 +5,15 @@ using System.Threading;
 using System.IO;
 using System;
 using System.Text.RegularExpressions;
-using System.Reflection;
 
 namespace ArpScanner
 {
     public class ARPScan
     {
-
         [DllImport("iphlpapi.dll", ExactSpelling = true)]
-        static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
+        private static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
 
-        static uint macAddrLen = (uint)new byte[6].Length;
+        private static uint macAddrLen = (uint)new byte[6].Length;
         private const string separator = "|";
         private static List<string> macList = new List<string>();
 
@@ -29,7 +27,6 @@ namespace ArpScanner
         {
             IPAddress ipAddress = new IPAddress(0);
             byte[] macAddr = new byte[6];
-            string deviceInfo = "";
 
             try
             {
@@ -43,9 +40,7 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(string.Join(": ", "Invalid IP read from file", ipString));
-                Console.ResetColor();
+                FormatOutput(string.Join(": ", "Invalid IP read from file", ipString), ConsoleColor.Red);
             }
         }
 
@@ -66,9 +61,8 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.WriteLine(e); //TODO
+                FormatOutput(e.ToString(), ConsoleColor.Red);   //TODO
             }
-
             return "Unknown";
         }
 
@@ -87,9 +81,7 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(e); //TODO
-                Console.ResetColor();
+                FormatOutput(e.ToString(), ConsoleColor.Red);   //TODO
             }
 
             Thread.Sleep(timeout);
@@ -107,9 +99,8 @@ namespace ArpScanner
             }
             catch (Exception e)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error reading file.");
-                Console.ResetColor();
+                FormatOutput("Error reading file.", ConsoleColor.Red);
+
                 return new List<string>();
             }
             return list;
@@ -133,17 +124,12 @@ namespace ArpScanner
                     }
                     catch
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Cannot read timeout value.");
+                        FormatOutput("Cannot read timeout value.", ConsoleColor.Red);
                     }
                 }
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Starting ARP scan");
-                Console.ResetColor();
-
+                FormatOutput("Starting ARP scan", ConsoleColor.Cyan);
                 output = CheckStatus(LoadListFromFile(ipFile), timeout);
-
                 Console.WriteLine(String.Format("{0,-20} | {1,-20} | {2,-20}", "IP", "MAC", "InterfaceDetails"));
 
                 foreach (var entry in output)
@@ -155,12 +141,17 @@ namespace ArpScanner
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Please provide the text file containing the IP list for the ARP scan.");
-                Console.WriteLine("Usage: arp-scanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]");
-                Console.ResetColor();
+                FormatOutput("Please provide the text file containing the IP list for the ARP scan.", ConsoleColor.Yellow);
+                FormatOutput("Usage: arp-scanner.exe [FILE_OF_IPv4_ADDRESSES] [TIMEOUT_IN_MILLISECONDS]", ConsoleColor.Yellow);
             }
             return;
+        }
+
+        private static void FormatOutput(string message, System.ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }
