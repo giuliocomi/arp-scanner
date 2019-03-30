@@ -5,15 +5,17 @@ using System.Threading;
 using System.IO;
 using System;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace ArpScanner
 {
     public class ARPScan
     {
-        [DllImport("iphlpapi.dll", ExactSpelling = true)]
-        private static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
 
-        private static uint macAddrLen = (uint)new byte[6].Length;
+        [DllImport("iphlpapi.dll", ExactSpelling = true)]
+        static extern int SendARP(int DestIP, int SrcIP, byte[] pMacAddr, ref uint PhyAddrLen);
+
+        static uint macAddrLen = (uint)new byte[6].Length;
         private const string separator = "|";
         private static List<string> macList = new List<string>();
 
@@ -129,7 +131,9 @@ namespace ArpScanner
                 }
 
                 FormatOutput("Starting ARP scan", ConsoleColor.Cyan);
+
                 output = CheckStatus(LoadListFromFile(ipFile), timeout);
+
                 Console.WriteLine(String.Format("{0,-20} | {1,-20} | {2,-20}", "IP", "MAC", "InterfaceDetails"));
 
                 foreach (var entry in output)
