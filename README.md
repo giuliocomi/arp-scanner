@@ -5,9 +5,10 @@ The ARP scanner has been originally develop as a very portable Powershell script
 This standalone solution might be useful for quickly discover hosts in the subnet when ICMP requests are filtered by the live hosts.
 
 ## Features
-1) Essentiality and portability
-2) Discover live hosts on your LAN despite of filtered ICMP packets 
-3) Identify the manufacturer details of the interface by resolving the MAC
+1) Multi threaded scanner
+2) Essentiality and portability
+3) Discover live hosts on your LAN despite of filtered ICMP packets 
+4) Identify the manufacturer details of the interface by resolving the MAC
 
 ## Notes
 The [maclist.txt](https://github.com/giuliocomi/arp-scanner/blob/master/maclist.txt) file must be downloaded to be able to resolve the MAC.
