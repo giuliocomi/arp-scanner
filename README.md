@@ -6,7 +6,7 @@ This standalone solution might be useful for quickly discover hosts in the subne
 
 ## Features
 1) Essentiality and portability
-2) Discover live hosts on your LAN despite of ICMP filtered packets 
+2) Discover live hosts on your LAN despite of filtered ICMP packets 
 3) Identify the manufacturer details of the interface by resolving the MAC
 
 ## Notes
