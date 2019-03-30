@@ -1,5 +1,5 @@
 # arp-scanner
-A simple and lightweight C# ARP scanner to identify live hosts in your LAN. 
+A multi-threaded and lightweight C# ARP scanner to identify live hosts in your LAN. 
 The ARP scanner has been originally develop as a very portable Powershell script [ActiveARP.ps1](https://github.com/giuliocomi/posh-discovery/blob/master/cmdlets/ActiveARP.ps1).
 
 This standalone solution might be useful for quickly discover hosts in the subnet when ICMP requests are filtered by the live hosts.
